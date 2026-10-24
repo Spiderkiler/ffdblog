@@ -1,0 +1,30 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	items: { name: string; count: number; url: string }[];
+}
+
+const { title, description, items } = Astro.props;
+---
+
+<div class="mx-auto w-full max-w-[60rem]">
+    <div class="card-base p-6 md:p-8 mb-4 onload-animation">
+        <h1 class="text-3xl font-bold text-90 mb-2">{title}</h1>
+        <p class="text-50">{description}</p>
+    </div>
+
+    <div class="card-base p-6 md:p-8 mb-4 onload-animation" style="animation-delay: 100ms">
+        {items.length === 0 && <p class="text-50">这里还没有内容。</p>}
+        <div class="flex flex-wrap gap-2.5">
+            {items.map(item => (
+                <a href={item.url} class="btn-regular h-10 px-4 rounded-xl text-sm font-bold active:scale-95">
+                    <span>{item.name}</span>
+                    <span class="ml-2 px-2 py-0.5 rounded-md bg-white/60 dark:bg-black/20 text-xs font-medium">
+                        {item.count}
+                    </span>
+                </a>
+            ))}
+        </div>
+    </div>
+</div>

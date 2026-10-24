@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import { getPostUrlBySlug } from "@utils/url-utils";
+import PostCard from "./PostCard.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+	backUrl?: string;
+	backLabel?: string;
+	posts: CollectionEntry<"posts">[];
+}
+
+const { title, description, backUrl, backLabel = "返回全部", posts } = Astro.props;
+
+let delay = 0;
+const interval = 50;
+---
+
+<div class="mx-auto w-full max-w-[60rem]">
+    <div class="card-base p-6 md:p-8 mb-4 onload-animation">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-90 mb-2">{title}</h1>
+                <p class="text-50">{description ?? `共 ${posts.length} 篇文章`}</p>
+            </div>
+            {backUrl && (
+                <a href={backUrl} class="btn-plain scale-animation h-10 px-3 rounded-lg text-sm font-bold shrink-0">
+                    <Icon name="material-symbols:chevron-left-rounded" class="text-[1.25rem] mr-1"></Icon>
+                    {backLabel}
+                </a>
+            )}
+        </div>
+    </div>
+
+    <div class="flex flex-col md:gap-4 mb-4">
+        {posts.map((entry) => (
+            <PostCard
+                    entry={entry}
+                    title={entry.data.title}
+                    tags={entry.data.tags}
+                    category={entry.data.category}
+                    published={entry.data.published}
+                    updated={entry.data.updated}
+                    url={getPostUrlBySlug(entry.slug)}
+                    image={entry.data.image}
+                    description={entry.data.description}
+                    draft={entry.data.draft}
+                    class="onload-animation"
+                    style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
+            ></PostCard>
+        ))}
+    </div>
+</div>

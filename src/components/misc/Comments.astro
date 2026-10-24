@@ -1,0 +1,31 @@
+---
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import { giscusConfig } from "../../config";
+
+const enabled =
+	giscusConfig.enable &&
+	!!giscusConfig.repo &&
+	!!giscusConfig.repoId &&
+	!!giscusConfig.categoryId;
+---
+
+{enabled && (
+    <section id="comments" class="card-base p-6 md:p-8 mb-4 onload-animation" aria-label={i18n(I18nKey.comments)}>
+        <h2 class="text-xl font-bold text-90 mb-5">{i18n(I18nKey.comments)}</h2>
+        <div
+                id="giscus-container"
+                class="giscus"
+                data-repo={giscusConfig.repo}
+                data-repo-id={giscusConfig.repoId}
+                data-category={giscusConfig.category}
+                data-category-id={giscusConfig.categoryId}
+                data-mapping={giscusConfig.mapping}
+                data-strict={giscusConfig.strict ? "1" : "0"}
+                data-reactions-enabled={giscusConfig.reactionsEnabled ? "1" : "0"}
+                data-input-position={giscusConfig.inputPosition}
+                data-lang={giscusConfig.lang}
+        >
+        </div>
+    </section>
+)}

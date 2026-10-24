@@ -1,0 +1,103 @@
+---
+import { Icon } from "astro-icon/components";
+import { profileConfig } from "../config";
+import { url } from "../utils/url-utils";
+import ImageWrapper from "./misc/ImageWrapper.astro";
+
+const displayName = "诗白灯";
+const isExternal = (target: string) => /^https?:\/\//.test(target);
+const links = profileConfig.links;
+const contacts = [
+	{ name: "微信", value: "I36793679yyy", icon: "fa6-brands:weixin" },
+	{ name: "邮箱", value: "2366298004@qq.com", icon: "fa6-solid:envelope" },
+];
+---
+
+<section class="onload-animation pt-4 md:pt-8 pb-10 md:pb-14">
+    <div class="flex flex-col-reverse md:flex-row md:items-center gap-8 md:gap-14">
+        <div class="min-w-0 flex-1">
+            <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--primary)]">
+                <span class="h-px w-6 bg-[var(--primary)] opacity-50"></span>
+                Hello, I'm {displayName}
+            </p>
+            <h1 class="mt-4 text-[2rem] leading-[1.25] md:text-[3.4rem] md:leading-[1.12] font-bold tracking-tight text-90">
+                你好<br class="hidden md:block">我是{displayName}
+            </h1>
+        </div>
+
+        <a href={url("/about/")} aria-label="关于诗白灯" class="group shrink-0 self-start md:self-center">
+            <div class="relative h-28 w-28 md:h-40 md:w-40 rounded-[1.75rem] bg-[var(--card-bg)] p-2 border border-[var(--card-border)]"
+                 style="box-shadow: var(--card-shadow-hover);">
+                <ImageWrapper src={profileConfig.avatar || ""} alt="诗白灯的头像"
+                              class="h-full w-full rounded-[1.35rem] transition duration-500 group-hover:scale-[1.02]"></ImageWrapper>
+                <span class="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--brand-gradient)] border border-[var(--brand-border)] text-[var(--brand-text)] shadow-[var(--btn-shadow)]">
+                    <Icon name="fa6-solid:feather" class="text-[0.85rem]"></Icon>
+                </span>
+            </div>
+        </a>
+    </div>
+
+    <div class="about-card card-base mt-8 md:mt-10 p-6 md:p-8">
+        <div class="flex items-start justify-between gap-4">
+            <h2 class="text-lg md:text-xl font-bold tracking-tight text-90">About Me</h2>
+            <span class="about-name pt-0.5 text-sm text-50">{displayName}</span>
+        </div>
+        <p class="about-bio mt-4 max-w-[58rem] text-[0.95rem] leading-7 text-50 md:text-base">
+            一个独立开发者，是个扎啤，喜欢发动鬼脑进行各种各样的创作，目前是一个痴迷于JAVA开发的菜鸟    
+        </p>
+        <div class="about-links mt-6 flex flex-wrap items-center gap-2.5">
+            {links.map(item => {
+                const external = isExternal(item.url);
+                return (
+                    <a rel="me" aria-label={item.name} title={item.name}
+                       href={external ? item.url : url(item.url)}
+                       target={external ? "_blank" : null}
+                       class="btn-regular h-11 w-11 rounded-xl active:scale-95">
+                        <Icon name={item.icon} class="text-[1.2rem]"></Icon>
+                    </a>
+                );
+            })}
+            {contacts.map(contact => (
+                <button type="button"
+                        data-copy-value={contact.value}
+                        data-copy-name={contact.name}
+                        aria-label={`复制${contact.name}`}
+                        title={`复制${contact.name}`}
+                        class="contact-copy group btn-regular h-11 gap-2 rounded-xl px-4 active:scale-95 data-[copied=true]:text-[var(--primary)]">
+                    <Icon name={contact.icon} class="text-[1.1rem] group-data-[copied=true]:hidden"></Icon>
+                    <Icon name="fa6-solid:check" class="hidden text-[1.1rem] group-data-[copied=true]:inline-block"></Icon>
+                    <span class="text-sm font-medium">{contact.name}</span>
+                </button>
+            ))}
+            <span class="sr-only" role="status" data-copy-status></span>
+        </div>
+    </div>
+</section>
+
+<style>
+    .contact-copy {
+        position: relative;
+    }
+
+    .contact-copy::after {
+        content: attr(data-copy-tip);
+        position: absolute;
+        bottom: calc(100% + 0.4rem);
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.1rem 0.5rem;
+        border-radius: 0.375rem;
+        background: rgb(0 0 0 / 0.75);
+        color: #fff;
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+    }
+
+    .contact-copy[data-copied]::after {
+        opacity: 1;
+    }
+</style>

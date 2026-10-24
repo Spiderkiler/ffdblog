@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from "astro";
+import TaxonomyPostList from "@components/TaxonomyPostList.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@utils/content-utils";
+import { tagSlug } from "@utils/taxonomy-utils";
+import { url } from "@utils/url-utils";
+
+export const getStaticPaths = (async () => {
+	const posts = await getSortedPosts();
+	const names = new Map<string, string>();
+	for (const post of posts) {
+		for (const tag of post.data.tags) {
+			const slug = tagSlug(tag);
+			if (!names.has(slug)) names.set(slug, tag.trim());
+		}
+	}
+
+	return [...names.entries()].map(([slug, name]) => ({
+		params: { tag: slug },
+		props: {
+			tag: name,
+			posts: posts.filter((post) =>
+				post.data.tags.some((item) => tagSlug(item) === slug),
+			),
+		},
+	}));
+}) satisfies GetStaticPaths;
+
+const { tag, posts } = Astro.props;
+---
+
+<MainGridLayout title={`标签：${tag}`} description={`标签 ${tag} 下的全部文章`}>
+    <TaxonomyPostList
+            title={`标签：${tag}`}
+            backUrl={url("/tags/")}
+            backLabel="全部标签"
+            posts={posts}
+    />
+</MainGridLayout>

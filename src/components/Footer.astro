@@ -1,0 +1,29 @@
+---
+import { licenseConfig, profileConfig } from "../config";
+
+const currentYear = new Date().getFullYear();
+---
+
+<div class="mt-12 border-t border-dashed border-[var(--line-divider)] pt-6 pb-10 text-center text-sm text-50">
+    <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <span>&copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}</span>
+        {licenseConfig.enable && (
+            <>
+                <span class="text-[var(--meta-divider)]">·</span>
+                <span>
+                    内容采用
+                    <a class="transition link text-[var(--primary)] font-medium" target="_blank" rel="noopener" href={licenseConfig.url}>{licenseConfig.name}</a>
+                    许可协议
+                </span>
+            </>
+        )}
+    </div>
+    <div class="mt-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <span>
+            Powered by
+            <a class="transition link text-[var(--primary)] font-medium" target="_blank" rel="noopener" href="https://astro.build">Astro</a>
+            &
+            <a class="transition link text-[var(--primary)] font-medium" target="_blank" rel="noopener" href="https://github.com/saicaca/fuwari">Fuwari</a>
+        </span>
+    </div>
+</div>

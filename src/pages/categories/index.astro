@@ -1,0 +1,26 @@
+---
+import TaxonomyIndex from "@components/TaxonomyIndex.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import { getCategoryList } from "@utils/content-utils";
+import { getCategoryUrl } from "@utils/url-utils";
+
+const uncategorized = i18n(I18nKey.uncategorized);
+const categories = (await getCategoryList()).filter(
+	(c) => c.name !== uncategorized,
+);
+const items = categories.map((c) => ({
+	name: c.name.trim(),
+	count: c.count,
+	url: getCategoryUrl(c.name),
+}));
+---
+
+<MainGridLayout title="分类" description="按分类浏览全部文章">
+    <TaxonomyIndex
+            title="分类"
+            description={`共 ${items.length} 个分类。技术是记录，生活是呼吸。`}
+            items={items}
+    />
+</MainGridLayout>
