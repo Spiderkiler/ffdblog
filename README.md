@@ -92,14 +92,15 @@ lang: zh_CN
 
 ## 部署到 Cloudflare Pages
 
-1. 把代码推送到 GitHub 仓库。
+1. 把代码推送到 GitHub 仓库 <https://github.com/Spiderkiler/ffdblog>（生产分支 `main`）。
 2. Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git，选择该仓库。
 3. 构建配置：
+   - Project name：`ffdblog`
    - Framework preset：`Astro`
    - Build command：`pnpm build`
    - Build output directory：`dist`
-   - 环境变量：`NODE_VERSION=20`（或更高）
-4. 部署完成后，把 `astro.config.mjs` 中的 `site` 改为最终域名，再触发一次部署。
+   - 环境变量：`NODE_VERSION=22`、`PNPM_VERSION=9.14.4`（`.nvmrc` 也已固定 Node 22）
+4. 部署完成后，如果实际域名不是 `ffdblog.pages.dev`，把 `astro.config.mjs` 中的 `site` 改为最终域名，再触发一次部署。
 
 Cloudflare Pages 免费版提供无限静态请求、每月 500 次构建、单文件 25 MB，足够个人博客使用。
 
